@@ -10,63 +10,18 @@
  
 ![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/Topologiya.png)  
 
-### **CLI**
+### **MACHINES**
  
 ```
 su -
 toor
-hostnamectl set-hostname CLI; exec bash 
+hostnamectl set-hostname HOSTNAME; exec bash 
 нажать enter
 ```
 
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/CLI(1).png)  
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/name_change.png)  
 
 Повторяем идентичные действие с остольными машинами
- 
-### **ISP**
- 
-```
-su -
-toor
-hostnamectl set-hostname ISP; exec bash
-нажать enter
-``` 
- 
-### **HQ-R**
- 
-```
-su -
-toor
-hostnamectl set-hostname HQ-R; exec bash
-нажать enter
-```
- 
-### **HQ-SRV**
- 
-``` 
-su - 
-toor
-hostnamectl set-hostname HQ-SRV; exec bash
-нажать enter 
-```
-
-### **BR-R** 
-
-```
-su -
-toor
-hostnamectl set-hostname BR-R; exec bash
-нажать enter
-```
- 
-### **BR-SRV**
- 
-```
-su -
-toor
-hostnamectl set-hostname BR-SRV; exec bash
-нажать enter
-```
 
 
 **b.	Рассчитайте IP-адресацию IPv4 и IPv6. Необходимо заполнить таблицу №1, чтобы эксперты могли проверить ваше рабочее место.**  
@@ -101,18 +56,12 @@ hostnamectl set-hostname BR-SRV; exec bash
 ## Настройка адресации  
  
 **Назначаем адресацию согласно ранее заполненной таблицы №1**  
- 
-## **CLI**  
 
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/CLI(2).png)  
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/everything_adapter_config.png)  
  
 ```
 ip -c a
 ```
- 
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/CLI(3).png)  
- 
-## **ISP**  
  
 ```
 su -
@@ -121,10 +70,6 @@ enter
 nmtui
 ```
 
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/ISP(1).png)   
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/ISP(2).png)  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/ISP(3).png)  
- 
 После установки ip-адресов необходимо переподключить интерфейсы.  
  
 Произведём настройку маршрута для CLI
@@ -136,105 +81,38 @@ ip route add default via 192.168.0.2
 необходимо включить опцию forwarding:  
  
 ``` 
-nano /etc/net/sysctl.conf
-ctrl-x
-y
+vim /etc/net/sysctl.conf
+:wq
 enter
 ```
  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/ISP(4).png)  
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/forwarding_on.png)  
  
 ```
 systemctl restart network
 ip -c a
 ```
- 
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/ISP(5).png)   
-
-**HQ-R**  
-```
-su -
-toor
-enter
-nmtui
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(1).png)
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(2).png)
-
-```
-ctrl-x
-y
-enter
-```
-Необходимо включить опцию forwarding:  
-```
-nano /etc/net/sysctl.conf
-ctrl-x
-y
-enter
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(3).png)  
-```
-systemctl restart network
-ip -c a
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(4).png)
-
-**BR-R**  
-```
-su -
-toor
-enter
-nmtui
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(1).png)  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(2).png)  
-
-
-Необходимо включить опцию forwarding:  
-```
-nano /etc/net/sysctl.conf
-ctrl-x
-y
-enter
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(3).png)  
-```
-systemctl restart network
-ip -c a
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(4).png)  
-
-## **BR-SRV**  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-SRV(1).png)
+## **MACHINES**  
 
 ```
 ip -c a
 ```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-SRV(2).png)
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/addresses.png)
 
 **2.	Настройте внутреннюю динамическую маршрутизацию по средствам FRR. Выберите и обоснуйте выбор протокола динамической маршрутизации из расчёта, что в дальнейшем сеть будет масштабироваться.**  
 **Настройка FRR**  
 Для настройки потребуется включённый forwarding, настройка выполнялась ранее.  
 
 Предварительно настроем интерфейс туннеля:
-## **HQ-R**
 ```
 nmtui
 ``` 
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(5).png)  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(6).png) 
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/tunnel_conf.png)  
 
-## **BR-R**
-```
-nmtui
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(5).png)  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(6).png)
 
 **Обоснование**: Настройку динамическое маршрутизации производим с помощью протокола **OSPF** – Данный протокол динамической сети позволяет разделять сеть на логические области, что делает его масштабируемым для больших сетей.  
 Каждая область может иметь свою таблицу маршрутизации, что уменьшает нагрузку на маршрутизаторы и улучшает производительность сети.  
-## **HQ-R**
+## **ROUTERS**
 
 ```
 nano /etc/frr/daemons
@@ -242,7 +120,7 @@ nano /etc/frr/daemons
 ospfd=no на строчку
 ospfd=yes
 ```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(7).png)  
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/frr-daemons.png)  
 
 ```
 ctrl-x
@@ -255,7 +133,7 @@ passive-interface default
 network 10.0.0.0/26 area 0
 network 172.16.0.0/24 area 0
 exit
-interface tun1
+interface tunnel1
 no ip ospf network broadcast
 no ip ospf passive
 exit
@@ -279,55 +157,7 @@ systemctl disable --now firewalld.service
 systemctl restart frr
 ```
 
-## **BR-R**
-
-```
-nano /etc/frr/daemons
-меняем строчку
-ospfd=no на строчку
-ospfd=yes
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/BR-R(7).png)  
-
-```
-ctrl-x
-y
-systemctl enable --now frr
-vtysh
-conf t
-router ospf
-passive-interface default
-network 10.0.2.0/28 area 0
-network 172.16.0.0/24 area 0
-exit
-interface tun1
-no ip ospf network broadcast
-no ip ospf passive
-exit
-do write memory
-exit
-```
-Зададим TTL для OSPF  
-```
-nmcli connection edit tun1
-set ip-tunnel.ttl 64
-save
-quit
-```
-Временно выключаем сервис службы **firewalld**  
-```
-systemctl stop firewalld.service
-systemctl disable --now firewalld.service
-```
-```
-systemctl restart frr
-```
-Проверим работу OSPF:  
-```
-show ip ospf neighbor
-exit
-```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/Screenshot_1.png)
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/configuration.png)
 
 **3.	Настройте автоматическое распределение IP-адресов на роутере HQ-R.**
 **a.	Учтите, что у сервера должен быть зарезервирован адрес.**
@@ -345,14 +175,13 @@ cp /etc/dhcp/dhcpd.conf{.example,}
 nano /etc/dhcp/dhcpd.conf
 ```
 поправляем файл:  
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(10).png)  
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/dhcpd%20config.png)  
 
 
 Проверяем файл на правильность заполнения. Обратите внимание, что файл заполнен в точности со скриншотом выше. (фигурные скобки в начале и конце секции, знаки **;** и тд.)
 ```
 dhcpd -t -cf /etc/dhcp/dhcpd.conf
 ```
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-R(11).png)   
 
 ```
 systemctl enable --now dhcpd
@@ -365,7 +194,7 @@ journalctl -f -u dhcpd
 systemctl restart network
 ```
 После проделанных манирпуляций HQ-SRV должен получить статический адрес.
-![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/Screenshot/HQ-SRV(5).png)  
+![image](https://github.com/sudo-apt-install-crissad/demo/blob/main/screenshot_bulk/result.png)  
 
 **4.	Настройте локальные учётные записи на всех устройствах в соответствии с таблицей 2.**  
 **Таблица №2**  
